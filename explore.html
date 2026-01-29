@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discover Events - Event Horizon</title>
+  <style>
+    /* Mobile-first responsive design */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #001122, #2c2c2c); /* Navy to charcoal gradient */
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: rgba(0, 0, 0, 0.8);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .brand-logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #007bff;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      text-decoration: none;
+      margin-right: 1rem;
+      position: absolute;
+      left: 1.5rem;
+    }
+
+    .brand-logo:hover {
+      color: #0056b3;
+    }
+
+    .back-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      position: absolute;
+      left: 16rem;
+    }
+
+    .back-icon:hover {
+      color: #007bff;
+    }
+
+    .logout-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      position: absolute;
+      right: 1.5rem;
+    }
+
+    .logout-icon:hover {
+      color: #007bff;
+    }
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .search-section {
+      padding: 1.5rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: background 0.3s ease;
+    }
+
+    .search-input:focus {
+      background: #444;
+    }
+
+    .tabs-section {
+      padding: 0 1.5rem 1rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .tab {
+      background: #333;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      background: #007bff;
+      color: #fff;
+    }
+
+    .tab:hover {
+      background: #555;
+    }
+
+    .tab.active:hover {
+      background: #0056b3;
+    }
+
+    .events-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 1.5rem;
+    }
+
+    .event-card {
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .event-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .event-header {
+      background: linear-gradient(135deg, #007bff, #0056b3); /* Subtle gradient */
+      padding: 1rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .event-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .status-badge {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .status-upcoming {
+      background: #007bff;
+      color: #fff;
+    }
+
+    .status-ongoing {
+      background: #dc3545;
+      color: #fff;
+    }
+
+    .status-completed {
+      background: #ffc107;
+      color: #000;
+    }
+
+    .event-body {
+      padding: 1rem;
+    }
+
+    .event-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .event-date, .event-organizer {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-bottom: 0.25rem;
+    }
+
+    .event-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      background: #333;
+      color: #fff;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+    }
+
+    .progress-section {
+      margin-top: 1rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #333;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-upcoming .progress-fill {
+      background: #007bff;
+    }
+
+    .progress-ongoing .progress-fill {
+      background: #dc3545;
+    }
+
+    .progress-completed .progress-fill {
+      background: #ffc107;
+    }
+
+    .progress-text {
+      font-size: 0.8rem;
+      color: #ccc;
+      text-align: center;
+    }
+
+    .profile-icon-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1.5rem;
+      width: 45px;
+      height: 45px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    }
+
+    .profile-icon-btn:hover {
+      background: #0056b3;
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(0, 123, 255, 0.6);
+    }
+
+    .profile-popup {
+      position: fixed;
+      top: 3.5rem;
+      right: 1.5rem;
+      background: rgba(0, 0, 0, 0.95);
+      border: 2px solid #007bff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 300px;
+      display: none;
+      z-index: 100;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .profile-popup.show {
+      display: block;
+    }
+
+    .profile-popup-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #007bff;
+      border-bottom: 1px solid #007bff;
+      padding-bottom: 0.5rem;
+    }
+
+    .profile-popup-info {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-popup-info strong {
+      color: #fff;
+    }
+
+    .profile-popup-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .profile-popup-btn {
+      padding: 0.6rem;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .profile-popup-btn:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .profile-popup-btn.logout {
+      background: #dc3545;
+    }
+
+    .profile-popup-btn.logout:hover {
+      background: #c82333;
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+      .events-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .page-title {
+        font-size: 1.8rem;
+      }
+
+      .search-input {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="ind.html" class="brand-logo">🌌 Event Horizon</a>
+    <span class="back-icon" onclick="goBack()">←</span>
+    <h1 class="page-title">Discover Events</h1>
+    <span class="logout-icon" onclick="logout()">✖</span>
+  </header>
+
+  <button class="profile-icon-btn" id="profile-icon-btn" onclick="toggleProfilePopup()">👤</button>
+  <div id="profile-popup" class="profile-popup">
+    <div class="profile-popup-title">My Profile</div>
+    <div id="profile-popup-content">
+      <div class="profile-popup-info"><strong>Name:</strong> <span id="popup-name">Not Logged In</span></div>
+      <div class="profile-popup-info"><strong>Email:</strong> <span id="popup-email">-</span></div>
+      <div class="profile-popup-info"><strong>Role:</strong> <span id="popup-role">-</span></div>
+    </div>
+    <div class="profile-popup-btns">
+      <button class="profile-popup-btn" onclick="navigateToProfile()">Go to Profile</button>
+      <button class="profile-popup-btn logout" onclick="logoutUser()">Logout</button>
+    </div>
+  </div>
+
+  <section class="search-section">
+    <input type="text" class="search-input" placeholder="Search events, domains…" id="search-input">
+  </section>
+
+  <section class="tabs-section">
+    <div class="tabs">
+      <button class="tab active" data-filter="all">All Events</button>
+      <button class="tab" data-filter="ongoing">Ongoing</button>
+      <button class="tab" data-filter="upcoming">Upcoming</button>
+      <button class="tab" data-filter="completed">Completed</button>
+    </div>
+  </section>
+
+  <section class="events-grid" id="events-grid">
+    <!-- Event Card 1 -->
+    <div class="event-card" data-status="upcoming" onclick="navigateTo('AI.html')">
+      <div class="event-header">
+        <span class="event-icon">🎉</span>
+        <span class="status-badge status-upcoming">Upcoming</span>
+      </div>
+      <div class="event-body">
+        <h3 class="event-title">AI Hackathon 2026</h3>
+        <p class="event-date">Date: may5 2026</p>
+        <p class="event-organizer">Organizer: Tech Corp</p>
+        <div class="event-tags">
+          <span class="tag">AI</span>
+          <span class="tag">Machine Learning</span>
+        </div>
+        <div class="progress-section">
+          <div class="progress-bar progress-upcoming">
+            <div class="progress-fill" style="width: 60%;"></div>
+          </div>
+          <p class="progress-text">300/500 filled</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event Card 2 -->
+    <div class="event-card" data-status="ongoing" onclick="navigateTo('web dev.html')">
+      <div class="event-header">
+        <span class="event-icon">💻</span>
+        <span class="status-badge status-ongoing">Ongoing</span>
+      </div>
+      <div class="event-body">
+        <h3 class="event-title">Web Dev Workshop</h3>
+        <p class="event-date">Date: Sep 20, 2023</p>
+        <p class="event-organizer">Organizer: Code Academy</p>
+        <div class="event-tags">
+          <span class="tag">Web Development</span>
+          <span class="tag">UI/UX Design</span>
+        </div>
+        <div class="progress-section">
+          <div class="progress-bar progress-ongoing">
+            <div class="progress-fill" style="width: 80%;"></div>
+          </div>
+          <p class="progress-text">400/500 filled</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event Card 3 -->
+    <div class="event-card" data-status="ongoing">
+      <div class="event-header">
+        <span class="event-icon">🏆</span>
+        <span class="status-badge status-ongoing">ongoing</span>
+      </div>
+      <div class="event-body">
+        <h3 class="event-title">Cybersecurity Challenge</h3>
+        <p class="event-date">Date: feb 01, 2026</p>
+        <p class="event-organizer">Organizer: SecureTech</p>
+        <div class="event-tags">
+          <span class="tag">Cybersecurity</span>
+          <span class="tag">Data Science</span>
+        </div>
+        <div class="progress-section">
+          <div class="progress-bar progress-completed">
+            <div class="progress-fill" style="width: 100%;"></div>
+          </div>
+          <p class="progress-text">349/500 filled</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event Card 4 -->
+    <div class="event-card" data-status="upcoming">
+      <div class="event-header">
+        <span class="event-icon">🚀</span>
+        <span class="status-badge status-upcoming">Upcoming</span>
+      </div>
+      <div class="event-body">
+        <h3 class="event-title">Blockchain Summit</h3>
+        <p class="event-date">Date: Nov 5, 2023</p>
+        <p class="event-organizer">Organizer: BlockChain Inc</p>
+        <div class="event-tags">
+          <span class="tag">Blockchain</span>
+          <span class="tag">IoT</span>
+        </div>
+        <div class="progress-section">
+          <div class="progress-bar progress-upcoming">
+            <div class="progress-fill" style="width: 40%;"></div>
+          </div>
+          <p class="progress-text">200/500 filled</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Event Card 5: Data Science Internship -->
+    <div class="event-card" data-status="upcoming">
+      <div class="event-header">
+        <span class="event-icon">📊</span>
+        <span class="status-badge status-upcoming">Upcoming</span>
+      </div>
+      <div class="event-body">
+        <h3 class="event-title">Data Science Internship</h3>
+        <p class="event-date">Date: Dec 15, 2024</p>
+        <p class="event-organizer">Organizer: DataCorp</p>
+        <div class="event-tags">
+          <span class="tag">Data Science</span>
+          <span class="tag">Machine Learning</span>
+        </div>
+        <div class="progress-section">
+          <div class="progress-bar progress-upcoming">
+            <div class="progress-fill" style="width: 50%;"></div>
+          </div>
+          <p class="progress-text">250/500 filled</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Event Card 6: Mobile App Hackathon -->
+    <div class="event-card" data-status="upcoming">
+      <div class="event-header">
+        <span class="event-icon">📱</span>
+        <span class="status-badge status-upcoming">Upcoming</span>
+      </div>
+      <div class="event-body">
+        <h3 class="event-title">Mobile App Hackathon</h3>
+        <p class="event-date">Date: Jan 20, 2025</p>
+        <p class="event-organizer">Organizer: AppDev Studios</p>
+        <div class="event-tags">
+          <span class="tag">Mobile Development</span>
+          <span class="tag">UI/UX Design</span>
+        </div>
+        <div class="progress-section">
+          <div class="progress-bar progress-upcoming">
+            <div class="progress-fill" style="width: 30%;"></div>
+          </div>
+          <p class="progress-text">150/500 filled</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Load posted events from localStorage
+    function loadPostedEvents() {
+      const postedEvents = JSON.parse(localStorage.getItem('postedEvents')) || [];
+      const eventsGrid = document.getElementById('events-grid');
+
+      postedEvents.forEach(event => {
+        const eventCard = document.createElement('div');
+        eventCard.className = 'event-card';
+        eventCard.setAttribute('data-status', event.status);
+        eventCard.style.cursor = 'pointer';
+        eventCard.onclick = () => {
+          window.location.href = `event-detail.html?id=${event.id}`;
+        };
+
+        // Calculate progress (random for demo)
+        const progress = Math.floor(Math.random() * 80) + 20;
+
+        eventCard.innerHTML = `
+          <div class="event-header">
+            <span class="event-icon">${event.icon}</span>
+            <span class="status-badge status-${event.status}">${event.status.charAt(0).toUpperCase() + event.status.slice(1)}</span>
+          </div>
+          <div class="event-body">
+            <h3 class="event-title">${event.title}</h3>
+            <p class="event-date">Date: ${new Date(event.date).toLocaleDateString()}</p>
+            <p class="event-organizer">Organizer: ${event.organizer}</p>
+            <div class="event-tags">
+              ${event.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+            </div>
+            <div class="progress-section">
+              <div class="progress-bar progress-${event.status}">
+                <div class="progress-fill" style="width: ${progress}%;"></div>
+              </div>
+              <p class="progress-text">${Math.floor(event.maxAttendees * progress / 100)}/${event.maxAttendees} filled</p>
+            </div>
+          </div>
+        `;
+
+        eventsGrid.appendChild(eventCard);
+      });
+    }
+
+    // Load posted events on page load
+    loadPostedEvents();
+
+    // Tab filtering
+    const tabs = document.querySelectorAll('.tab');
+    let cards = document.querySelectorAll('.event-card');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs
+        tabs.forEach(t => t.classList.remove('active'));
+        // Add active class to clicked tab
+        tab.classList.add('active');
+
+        const filter = tab.getAttribute('data-filter');
+        cards = document.querySelectorAll('.event-card'); // Re-query cards
+        cards.forEach(card => {
+          const status = card.getAttribute('data-status');
+          if (filter === 'all' || status === filter) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Placeholder functions for header icons
+    function goBack() {
+      window.history.back();
+    }
+
+    function logout() {
+      alert('Logging out');
+      window.location.href = 'ind.html'; // Redirect to home on logout
+    }
+
+    // Profile popup functions
+    function toggleProfilePopup() {
+      const popup = document.getElementById('profile-popup');
+      popup.classList.toggle('show');
+      if (popup.classList.contains('show')) {
+        updateProfilePopup();
+      }
+    }
+
+    function updateProfilePopup() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      const popup = document.getElementById('profile-popup');
+      
+      if (currentUser) {
+        document.getElementById('popup-name').textContent = currentUser.fullName || 'User';
+        document.getElementById('popup-email').textContent = currentUser.email || '-';
+        document.getElementById('popup-role').textContent = currentUser.role || '-';
+        document.getElementById('profile-icon-btn').style.display = 'flex';
+      } else {
+        popup.classList.remove('show');
+        document.getElementById('profile-icon-btn').style.display = 'none';
+      }
+    }
+
+    function navigateToProfile() {
+      window.location.href = 'bottom.html';
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('isLoggedIn');
+      window.location.href = 'ind.html';
+    }
+
+    // Navigate to course page
+    function navigateTo(page) {
+      window.location.href = page;
+    }
+
+    // Optional: Search functionality (basic filter by title)
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      cards = document.querySelectorAll('.event-card'); // Re-query cards
+      cards.forEach(card => {
+        const title = card.querySelector('.event-title').textContent.toLowerCase();
+        if (title.includes(query)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+
+    // Initialize profile icon visibility on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      updateProfilePopup();
+      
+      // Close popup when clicking outside
+      document.addEventListener('click', (e) => {
+        const popup = document.getElementById('profile-popup');
+        const btn = document.getElementById('profile-icon-btn');
+        if (!popup.contains(e.target) && !btn.contains(e.target)) {
+          popup.classList.remove('show');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup - Event Horizon</title>
+  <style>
+    /* Mobile-first responsive design */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #001122, #2c2c2c); /* Navy blue to charcoal gradient */
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .signup-container {
+      width: 100%;
+      max-width: 100%; /* Full-width */
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    .title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 2rem;
+    }
+
+    .role-section {
+      margin-bottom: 2rem;
+    }
+
+    .role-label {
+      display: block;
+      margin-bottom: 1rem;
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+
+    .role-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .role-btn {
+      background: #333;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .role-btn.active {
+      background: #007bff;
+      color: #fff;
+    }
+
+    .role-btn:hover {
+      background: #555;
+    }
+
+    .role-btn.active:hover {
+      background: #0056b3;
+    }
+
+    .organization-field {
+      display: none; /* Hidden by default */
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .organization-field input {
+      width: 100%;
+      padding: 0.75rem 0.75rem 0.75rem 3rem;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: background 0.3s ease;
+    }
+
+    .organization-field input:focus {
+      background: #444;
+    }
+
+    .organization-field::before {
+      content: '🏢';
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 0.75rem 0.75rem 0.75rem 3rem;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: background 0.3s ease;
+    }
+
+    .input-group input:focus {
+      background: #444;
+    }
+
+    .input-group:nth-child(1)::before { /* Full Name icon */
+      content: '👤';
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    .input-group:nth-child(2)::before { /* Email icon */
+      content: '✉️';
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    .input-group:nth-child(3)::before { /* Password icon */
+      content: '🔒';
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    .input-group:nth-child(4)::before { /* Confirm Password icon */
+      content: '🔒';
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    .interests-section {
+      margin-bottom: 2rem;
+    }
+
+    .interests-label {
+      display: block;
+      margin-bottom: 1rem;
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+
+    .interests-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .tag {
+      background: #333;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .tag.active {
+      background: #007bff;
+      color: #fff;
+    }
+
+    .tag:hover {
+      background: #555;
+    }
+
+    .tag.active:hover {
+      background: #0056b3;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1rem;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-bottom: 1.5rem;
+    }
+
+    .submit-btn:hover {
+      background: #0056b3;
+    }
+
+    .submit-btn:focus {
+      outline: 2px solid #007bff;
+      outline-offset: 2px;
+    }
+
+    .login-link {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .login-link:hover {
+      color: #0056b3;
+      text-decoration: underline;
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+      .signup-container {
+        max-width: 600px;
+        padding: 3rem;
+      }
+
+      .title {
+        font-size: 2.5rem;
+      }
+
+      .role-buttons {
+        flex-wrap: nowrap;
+      }
+
+      .interests-tags {
+        justify-content: flex-start;
+      }
+    }
+
+    .brand-header {
+      position: fixed;
+      top: 1rem;
+      left: 1.5rem;
+      z-index: 99;
+    }
+
+    .brand-logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #007bff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .brand-logo:hover {
+      color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="brand-header">
+    <a href="ind.html" class="brand-logo">🌌 Event Horizon</a>
+  </div>
+  <div class="signup-container">
+    <h1 class="title">Join Event Horizon</h1>
+    <p class="subtitle">Create an account to get started</p>
+
+    <div class="role-section">
+      <label class="role-label">I am a:</label>
+      <div class="role-buttons">
+        <button class="role-btn active" id="student-btn">Student</button>
+        <button class="role-btn" id="organization-btn">Organizer</button>
+      </div>
+    </div>
+
+    <div class="organization-field" id="org-name-field">
+      <input type="text" placeholder="Organization Name" required>
+    </div>
+
+    <form>
+      <div class="input-group">
+        <input type="text" placeholder="Full Name" required>
+      </div>
+      <div class="input-group">
+        <input type="email" placeholder="Email" required>
+      </div>
+      <div class="input-group">
+        <input type="password" placeholder="Password" required>
+      </div>
+      <div class="input-group">
+        <input type="password" placeholder="Confirm Password" required>
+      </div>
+
+      <div class="interests-section" id="interests-section">
+        <label class="interests-label">Select Your Interests:</label>
+        <div class="interests-tags">
+          <button type="button" class="tag" data-interest="AI">AI</button>
+          <button type="button" class="tag" data-interest="Machine Learning">Machine Learning</button>
+          <button type="button" class="tag" data-interest="Web Development">Web Development</button>
+          <button type="button" class="tag" data-interest="Mobile Development">Mobile Development</button>
+          <button type="button" class="tag" data-interest="Cybersecurity">Cybersecurity</button>
+          <button type="button" class="tag" data-interest="Cloud Computing">Cloud Computing</button>
+          <button type="button" class="tag" data-interest="Data Science">Data Science</button>
+          <button type="button" class="tag" data-interest="DevOps">DevOps</button>
+          <button type="button" class="tag" data-interest="Blockchain">Blockchain</button>
+          <button type="button" class="tag" data-interest="IoT">IoT</button>
+          <button type="button" class="tag" data-interest="Game Development">Game Development</button>
+          <button type="button" class="tag" data-interest="UI/UX Design">UI/UX Design</button>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Create Account</button>
+    </form>
+
+    <p>Already have an account? <a href="#" class="login-link" onclick="goToLogin()">Login</a></p>
+  </div>
+
+  <script>
+    // Role buttons toggle
+    const studentBtn = document.getElementById('student-btn');
+    const organizationBtn = document.getElementById('organization-btn');
+    const orgNameField = document.getElementById('org-name-field');
+    const interestsSection = document.getElementById('interests-section');
+
+    studentBtn.addEventListener('click', () => {
+      studentBtn.classList.add('active');
+      organizationBtn.classList.remove('active');
+      orgNameField.style.display = 'none'; // Hide organization name field
+      interestsSection.style.display = 'block'; // Show interests section
+    });
+
+    organizationBtn.addEventListener('click', () => {
+      organizationBtn.classList.add('active');
+      studentBtn.classList.remove('active');
+      orgNameField.style.display = 'block'; // Show organization name field
+      interestsSection.style.display = 'none'; // Hide interests section
+    });
+
+    // Interest tags toggle
+    const tags = document.querySelectorAll('.tag');
+    tags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        tag.classList.toggle('active');
+      });
+    });
+
+    // Function to go to login page
+    function goToLogin() {
+      window.location.href = '/auth'; // Adjust path as needed
+    }
+
+    // Handle account creation form submission
+    document.querySelector('form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      // Gather form data
+      const form = e.target;
+      const inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="password"]');
+      const fullName = inputs[0].value.trim();
+      const email = inputs[1].value.trim();
+      const password = inputs[2].value.trim();
+      const confirmPassword = inputs[3].value.trim();
+      
+      // Validate passwords match
+      if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
+      
+      // Get selected role
+      const role = studentBtn.classList.contains('active') ? 'student' : 'organizer';
+      
+      // Get organization name if organizer
+      const orgNameInput = document.querySelector('#org-name-field input');
+      const orgName = role === 'organizer' ? orgNameInput.value.trim() : '';
+      
+      // Get selected interests
+      const selectedInterests = Array.from(tags)
+        .filter(tag => tag.classList.contains('active'))
+        .map(tag => tag.getAttribute('data-interest'));
+      
+      // Create user profile object with credentials
+      const userProfile = {
+        fullName: fullName,
+        email: email,
+        password: password,
+        role: role,
+        organizationName: orgName || null,
+        interests: selectedInterests,
+        createdAt: new Date().toISOString()
+      };
+      
+      // Store user profile in localStorage
+      localStorage.setItem('userProfile', JSON.stringify(userProfile));
+      localStorage.setItem('currentUser', JSON.stringify(userProfile));
+      localStorage.setItem('isLoggedIn', 'true');
+      
+      alert('Account created successfully! Welcome to Event Horizon!');
+      // After account creation backend logic, navigate to bottom.html
+      window.location.href = 'bottom.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Event Horizon</title>
+  <style>
+    /* Mobile-first responsive design - Same theme as login page */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #001122, #2c2c2c); /* Navy blue to charcoal gradient */
+      color: #fff;
+      min-height: 100vh;
+      padding: 1rem;
+      padding-top: 80px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: rgba(0, 0, 0, 0.8);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+
+    .back-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .back-icon:hover {
+      color: #007bff;
+    }
+
+    .brand-logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #007bff;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      text-decoration: none;
+      margin-right: 1rem;
+    }
+
+    .brand-logo:hover {
+      color: #0056b3;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .nav-tabs button {
+      padding: 0.75rem 1.5rem;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 0 0.5rem;
+      transition: background 0.3s ease;
+    }
+
+    .nav-tabs button.active, .nav-tabs button:hover {
+      background: #007bff;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .list {
+      margin-top: 1rem;
+    }
+
+    .item {
+      background: #333;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .item h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    .item p {
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .error-message {
+      color: #dc3545;
+      background: rgba(220, 53, 69, 0.2);
+      border: 1px solid #dc3545;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      display: none;
+      text-align: center;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .logout-btn {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      padding: 0.8rem 1.5rem;
+      background: #dc3545;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 99;
+      box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+    }
+
+    .logout-btn:hover {
+      background: #c82333;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(220, 53, 69, 0.6);
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        padding: 3rem;
+      }
+
+      .title {
+        font-size: 2.5rem;
+      }
+
+      .item {
+        flex-direction: row;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="ind.html" class="brand-logo">🌌 Event Horizon</a>
+    <span class="back-icon" onclick="goBack()">←</span>
+    <h2 style="margin-left: 1rem;">Admin Dashboard</h2>
+  </header>
+
+  <div class="container">
+    <h1 class="title">Admin Dashboard - Event Horizon</h1>
+
+    <div class="nav-tabs">
+      <button onclick="showSection('users')" class="active">View Users</button>
+      <button onclick="showSection('events')">View Events</button>
+      <button onclick="showSection('edit')">Edit Events</button>
+    </div>
+
+    <!-- View Users Section -->
+    <div id="users" class="section active">
+      <h2>Students and Organizer Logins</h2>
+      <button class="btn" onclick="loadUsers()">Load Users</button>
+      <div class="list" id="users-list"></div>
+    </div>
+
+    <!-- View Events Section -->
+    <div id="events" class="section">
+      <h2>Event Details</h2>
+      <button class="btn" onclick="loadEvents()">Load Events</button>
+      <div class="list" id="events-list"></div>
+    </div>
+
+    <!-- Edit/Delete Events Section -->
+    <div id="edit" class="section">
+      <h2>Edit/Delete Events</h2>
+      <select id="event-select" onchange="loadEventForEdit()">
+        <option value="">Select an Event to Edit</option>
+      </select>
+      <div class="error-message" id="edit-error"></div>
+      <form onsubmit="updateEvent(event)">
+        <div class="form-group">
+          <label>Event Title</label>
+          <input type="text" id="edit-title" placeholder="Title" required>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="edit-description" placeholder="Description" required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Event Date</label>
+          <input type="date" id="edit-date" required>
+        </div>
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" id="edit-location" placeholder="Location">
+        </div>
+        <div class="form-group">
+          <label>Event Type</label>
+          <select id="edit-type">
+            <option value="hackathon">Hackathon</option>
+            <option value="internship">Internship</option>
+            <option value="workshop">Workshop</option>
+            <option value="competition">Competition</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Max Attendees</label>
+          <input type="number" id="edit-capacity" placeholder="Max Attendees" required>
+        </div>
+        <div class="form-group">
+          <label>Tags (comma-separated)</label>
+          <input type="text" id="edit-tags" placeholder="Tags (comma-separated)">
+        </div>
+        <button type="submit" class="btn">Update Event</button>
+        <button type="button" class="btn btn-danger" onclick="deleteEvent()">Delete Event</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let currentEventId = null;
+
+    function goBack() {
+      window.history.back();
+    }
+
+    function adminLogout() {
+      localStorage.removeItem('isAdminLoggedIn');
+      window.location.href = 'ind.html';
+    }
+
+    function showSection(sectionId) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+      document.getElementById(sectionId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function loadUsers() {
+      try {
+        const userProfile = JSON.parse(localStorage.getItem('userProfile'));
+        const list = document.getElementById('users-list');
+        list.innerHTML = '';
+        
+        if (userProfile) {
+          list.innerHTML = `
+            <div class="item">
+              <div>
+                <h3>${userProfile.fullName}</h3>
+                <p><strong>Email:</strong> ${userProfile.email}</p>
+                <p><strong>Role:</strong> ${userProfile.role}</p>
+                <p><strong>Interests:</strong> ${userProfile.interests.join(', ')}</p>
+              </div>
+            </div>
+          `;
+        } else {
+          list.innerHTML = '<p style="color: #ccc;">No registered users found.</p>';
+        }
+      } catch (err) {
+        document.getElementById('users-list').innerHTML = '<p>Error loading users: ' + err.message + '</p>';
+      }
+    }
+
+    function loadEvents() {
+      try {
+        const postedEvents = JSON.parse(localStorage.getItem('postedEvents')) || [];
+        const list = document.getElementById('events-list');
+        list.innerHTML = '';
+        
+        if (postedEvents.length > 0) {
+          postedEvents.forEach(e => {
+            list.innerHTML += `
+              <div class="item" style="flex-direction: column; align-items: flex-start;">
+                <div style="width: 100%; margin-bottom: 1rem;">
+                  <h3>${e.title} ${e.icon}</h3>
+                  <p><strong>Description:</strong> ${e.description}</p>
+                  <p><strong>Date:</strong> ${new Date(e.date).toLocaleDateString()}</p>
+                  <p><strong>Location:</strong> ${e.location}</p>
+                  <p><strong>Organizer:</strong> ${e.organizer}</p>
+                  <p><strong>Type:</strong> ${e.type}</p>
+                  <p><strong>Max Attendees:</strong> ${e.maxAttendees}</p>
+                  <p><strong>Tags:</strong> ${e.tags.join(', ')}</p>
+                  <p><strong>Status:</strong> ${e.status}</p>
+                </div>
+              </div>
+            `;
+          });
+        } else {
+          list.innerHTML = '<p style="color: #ccc;">No events found.</p>';
+        }
+      } catch (err) {
+        document.getElementById('events-list').innerHTML = '<p>Error loading events: ' + err.message + '</p>';
+      }
+    }
+
+    function loadEventForEdit() {
+      const eventId = document.getElementById('event-select').value;
+      if (!eventId) return;
+      
+      try {
+        const postedEvents = JSON.parse(localStorage.getItem('postedEvents')) || [];
+        const eventIndex = postedEvents.findIndex(e => e.id == eventId);
+        
+        if (eventIndex === -1) {
+          alert('Event not found!');
+          return;
+        }
+        
+        const event = postedEvents[eventIndex];
+        currentEventId = eventId;
+        
+        document.getElementById('edit-title').value = event.title;
+        document.getElementById('edit-description').value = event.description;
+        document.getElementById('edit-date').value = event.date;
+        document.getElementById('edit-location').value = event.location;
+        document.getElementById('edit-type').value = event.type;
+        document.getElementById('edit-tags').value = event.tags.join(', ');
+        document.getElementById('edit-capacity').value = event.maxAttendees;
+      } catch (err) {
+        alert('Error loading event: ' + err.message);
+      }
+    }
+
+    function updateEvent(e) {
+      e.preventDefault();
+      
+      if (!currentEventId) {
+        alert('Select an event first!');
+        return;
+      }
+      
+      try {
+        const postedEvents = JSON.parse(localStorage.getItem('postedEvents')) || [];
+        const eventIndex = postedEvents.findIndex(ev => ev.id == currentEventId);
+        
+        if (eventIndex === -1) {
+          alert('Event not found!');
+          return;
+        }
+        
+        // Update event
+        postedEvents[eventIndex] = {
+          ...postedEvents[eventIndex],
+          title: document.getElementById('edit-title').value,
+          description: document.getElementById('edit-description').value,
+          date: document.getElementById('edit-date').value,
+          location: document.getElementById('edit-location').value,
+          type: document.getElementById('edit-type').value,
+          tags: document.getElementById('edit-tags').value.split(',').map(t => t.trim()),
+          maxAttendees: parseInt(document.getElementById('edit-capacity').value)
+        };
+        
+        localStorage.setItem('postedEvents', JSON.stringify(postedEvents));
+        alert('Event updated successfully!');
+        loadEvents();
+        
+        // Reset form
+        document.getElementById('event-select').value = '';
+        document.getElementById('edit-title').value = '';
+        document.getElementById('edit-description').value = '';
+        document.getElementById('edit-date').value = '';
+        document.getElementById('edit-location').value = '';
+        document.getElementById('edit-type').value = '';
+        document.getElementById('edit-tags').value = '';
+        document.getElementById('edit-capacity').value = '';
+        currentEventId = null;
+      } catch (err) {
+        alert('Error updating event: ' + err.message);
+      }
+    }
+
+    function deleteEvent() {
+      if (!currentEventId) {
+        alert('Select an event first!');
+        return;
+      }
+      
+      if (!confirm('Are you sure you want to delete this event?')) return;
+      
+      try {
+        const postedEvents = JSON.parse(localStorage.getItem('postedEvents')) || [];
+        const eventIndex = postedEvents.findIndex(e => e.id == currentEventId);
+        
+        if (eventIndex === -1) {
+          alert('Event not found!');
+          return;
+        }
+        
+        // Remove event
+        postedEvents.splice(eventIndex, 1);
+        localStorage.setItem('postedEvents', JSON.stringify(postedEvents));
+        
+        alert('Event deleted successfully!');
+        loadEvents();
+        
+        // Reset form
+        document.getElementById('event-select').value = '';
+        document.getElementById('edit-title').value = '';
+        document.getElementById('edit-description').value = '';
+        document.getElementById('edit-date').value = '';
+        document.getElementById('edit-location').value = '';
+        document.getElementById('edit-type').value = '';
+        document.getElementById('edit-tags').value = '';
+        document.getElementById('edit-capacity').value = '';
+        currentEventId = null;
+      } catch (err) {
+        alert('Error deleting event: ' + err.message);
+      }
+    }
+
+    // Populate event select dropdown
+    function populateEventSelect() {
+      try {
+        const postedEvents = JSON.parse(localStorage.getItem('postedEvents')) || [];
+        const select = document.getElementById('event-select');
+        select.innerHTML = '<option value="">Select an Event to Edit</option>';
+        
+        postedEvents.forEach(e => {
+          select.innerHTML += `<option value="${e.id}">${e.title}</option>`;
+        });
+      } catch (err) {
+        console.error('Error populating event select: ' + err.message);
+      }
+    }
+
+    // Load initial data
+    window.onload = () => {
+      loadUsers();
+      loadEvents();
+      populateEventSelect();
+    };
+  </script>
+
+  <button class="logout-btn" onclick="adminLogout()">🚪 Logout</button>
+</body>
+</html>

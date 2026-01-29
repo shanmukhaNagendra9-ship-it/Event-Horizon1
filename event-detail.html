@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Details - Event Horizon</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #001122, #2c2c2c);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: rgba(0, 0, 0, 0.8);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .back-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .back-icon:hover {
+      color: #007bff;
+    }
+
+    .brand-logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #007bff;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      text-decoration: none;
+      margin-right: 1rem;
+    }
+
+    .brand-logo:hover {
+      color: #0056b3;
+    }
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .hero {
+      padding: 3rem 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, #007bff, #0056b3);
+    }
+
+    .event-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+
+    .status-upcoming {
+      background: #007bff;
+      color: #fff;
+    }
+
+    .status-ongoing {
+      background: #dc3545;
+      color: #fff;
+    }
+
+    .status-completed {
+      background: #ffc107;
+      color: #000;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .event-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 2rem 0 1rem;
+    }
+
+    .event-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .info-item {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border-left: 4px solid #007bff;
+    }
+
+    .info-label {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .info-value {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .event-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+
+    .tag {
+      background: #333;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+
+    .about-section {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 12px;
+      margin: 2rem 0;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .about-text {
+      color: #ccc;
+      line-height: 1.8;
+    }
+
+    .participants {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 12px;
+      margin: 2rem 0;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: #333;
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #007bff;
+      border-radius: 5px;
+    }
+
+    .progress-text {
+      font-size: 0.9rem;
+      color: #ccc;
+      text-align: center;
+    }
+
+    .cta {
+      text-align: center;
+      margin: 3rem 0;
+    }
+
+    .cta-btn {
+      padding: 1rem 2rem;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .cta-btn:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    }
+
+    .profile-icon-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1.5rem;
+      width: 45px;
+      height: 45px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    }
+
+    .profile-icon-btn:hover {
+      background: #0056b3;
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(0, 123, 255, 0.6);
+    }
+
+    .profile-popup {
+      position: fixed;
+      top: 3.5rem;
+      right: 1.5rem;
+      background: rgba(0, 0, 0, 0.95);
+      border: 2px solid #007bff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 300px;
+      display: none;
+      z-index: 100;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .profile-popup.show {
+      display: block;
+    }
+
+    .profile-popup-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #007bff;
+      border-bottom: 1px solid #007bff;
+      padding-bottom: 0.5rem;
+    }
+
+    .profile-popup-info {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-popup-info strong {
+      color: #fff;
+    }
+
+    .profile-popup-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .profile-popup-btn {
+      padding: 0.6rem;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .profile-popup-btn:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .profile-popup-btn.logout {
+      background: #dc3545;
+    }
+
+    .profile-popup-btn.logout:hover {
+      background: #c82333;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        padding: 3rem;
+      }
+
+      .event-title {
+        font-size: 3rem;
+      }
+
+      .event-info {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="ind.html" class="brand-logo">🌌 Event Horizon</a>
+    <span class="back-icon" onclick="goBack()">←</span>
+    <h1 class="page-title">Event Details</h1>
+  </header>
+
+  <button class="profile-icon-btn" id="profile-icon-btn" onclick="toggleProfilePopup()">👤</button>
+  <div id="profile-popup" class="profile-popup">
+    <div class="profile-popup-title">My Profile</div>
+    <div id="profile-popup-content">
+      <div class="profile-popup-info"><strong>Name:</strong> <span id="popup-name">Not Logged In</span></div>
+      <div class="profile-popup-info"><strong>Email:</strong> <span id="popup-email">-</span></div>
+      <div class="profile-popup-info"><strong>Role:</strong> <span id="popup-role">-</span></div>
+    </div>
+    <div class="profile-popup-btns">
+      <button class="profile-popup-btn" onclick="navigateToProfile()">Go to Profile</button>
+      <button class="profile-popup-btn logout" onclick="logoutUser()">Logout</button>
+    </div>
+  </div>
+
+  <section class="hero">
+    <span class="event-icon" id="event-icon">🎉</span>
+    <span class="status-badge" id="status-badge">Upcoming</span>
+  </section>
+
+  <div class="container">
+    <h1 class="event-title" id="event-title">Event Title</h1>
+
+    <section class="event-info">
+      <div class="info-item">
+        <div class="info-label">Date & Time</div>
+        <div class="info-value" id="event-date">--</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Location</div>
+        <div class="info-value" id="event-location">--</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Organizer</div>
+        <div class="info-value" id="event-organizer">--</div>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <h2 class="section-title">About This Event</h2>
+      <p class="about-text" id="event-description">Event description will appear here.</p>
+    </section>
+
+    <section class="about-section">
+      <h2 class="section-title">Event Tags</h2>
+      <div class="event-tags" id="event-tags">
+        <!-- Tags will be inserted here -->
+      </div>
+    </section>
+
+    <section class="participants">
+      <h3 class="section-title">Participants</h3>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 50%;"></div>
+      </div>
+      <p class="progress-text" id="progress-text">Loading...</p>
+    </section>
+
+    <div class="cta">
+      <button class="cta-btn" onclick="loginToRegister()">Login to Register</button>
+    </div>
+  </div>
+
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+
+    function loginToRegister() {
+      window.location.href = 'login.html';
+    }
+
+    // Profile popup functions
+    function toggleProfilePopup() {
+      const popup = document.getElementById('profile-popup');
+      popup.classList.toggle('show');
+      if (popup.classList.contains('show')) {
+        updateProfilePopup();
+      }
+    }
+
+    function updateProfilePopup() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      const popup = document.getElementById('profile-popup');
+      
+      if (currentUser) {
+        document.getElementById('popup-name').textContent = currentUser.fullName || 'User';
+        document.getElementById('popup-email').textContent = currentUser.email || '-';
+        document.getElementById('popup-role').textContent = currentUser.role || '-';
+        document.getElementById('profile-icon-btn').style.display = 'flex';
+      } else {
+        popup.classList.remove('show');
+        document.getElementById('profile-icon-btn').style.display = 'none';
+      }
+    }
+
+    function navigateToProfile() {
+      window.location.href = 'bottom.html';
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('isLoggedIn');
+      window.location.href = 'ind.html';
+    }
+
+    // Load event details
+    function loadEventDetails() {
+      const eventId = new URLSearchParams(window.location.search).get('id');
+      const postedEvents = JSON.parse(localStorage.getItem('postedEvents')) || [];
+      const event = postedEvents.find(e => e.id == eventId);
+
+      if (event) {
+        // Update header
+        document.getElementById('event-icon').textContent = event.icon;
+        document.getElementById('event-title').textContent = event.title;
+        document.getElementById('status-badge').textContent = event.status.charAt(0).toUpperCase() + event.status.slice(1);
+        document.getElementById('status-badge').className = `status-badge status-${event.status}`;
+
+        // Update event info
+        document.getElementById('event-date').textContent = new Date(event.date).toLocaleDateString();
+        document.getElementById('event-location').textContent = event.location;
+        document.getElementById('event-organizer').textContent = event.organizer;
+
+        // Update description
+        document.getElementById('event-description').textContent = event.description || 'No description available.';
+
+        // Update tags
+        const tagsContainer = document.getElementById('event-tags');
+        tagsContainer.innerHTML = event.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+
+        // Update progress
+        const progress = Math.floor(Math.random() * 80) + 20;
+        const attendees = Math.floor(event.maxAttendees * progress / 100);
+        document.getElementById('progress-fill').style.width = progress + '%';
+        document.getElementById('progress-text').textContent = `${attendees}/${event.maxAttendees} registered`;
+      } else {
+        document.querySelector('.container').innerHTML = '<p style="text-align: center; padding: 2rem;">Event not found.</p>';
+      }
+
+      updateProfilePopup();
+      
+      // Close popup when clicking outside
+      const popup = document.getElementById('profile-popup');
+      const btn = document.getElementById('profile-icon-btn');
+      if (popup && btn) {
+        document.addEventListener('click', (e) => {
+          if (!popup.contains(e.target) && !btn.contains(e.target)) {
+            popup.classList.remove('show');
+          }
+        });
+      }
+    }
+
+    // Load on page ready
+    document.addEventListener('DOMContentLoaded', loadEventDetails);
+  </script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - Event Horizon</title>
+  <style>
+    /* Mobile-first responsive design - Same theme as provided */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #001122, #2c2c2c); /* Navy blue to charcoal gradient */
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 100%; /* Full-width */
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      display: block; /* Initially show login */
+    }
+
+    .admin-dashboard {
+      display: none; /* Hidden initially */
+    }
+
+    .title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 2rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 0.75rem 0.75rem 0.75rem 3rem;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: background 0.3s ease;
+    }
+
+    .input-group input:focus {
+      background: #444;
+    }
+
+    .input-group:nth-child(1)::before { /* Username icon */
+      content: '👤';
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    .input-group:nth-child(2)::before { /* Password icon */
+      content: '🔒';
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1rem;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-bottom: 1.5rem;
+    }
+
+    .submit-btn:hover {
+      background: #0056b3;
+    }
+
+    .submit-btn:focus {
+      outline: 2px solid #007bff;
+      outline-offset: 2px;
+    }
+
+    .logout-btn {
+      width: 100%;
+      padding: 1rem;
+      background: #dc3545;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: #c82333;
+    }
+
+    .error-message {
+      color: #dc3545;
+      background: rgba(220, 53, 69, 0.2);
+      border: 1px solid #dc3545;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+      display: none;
+      text-align: center;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: rgba(0, 0, 0, 0.8);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+
+    .back-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .back-icon:hover {
+      color: #007bff;
+    }
+
+    .brand-logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #007bff;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      text-decoration: none;
+      margin-right: 1rem;
+    }
+
+    .brand-logo:hover {
+      color: #0056b3;
+    }
+
+    body {
+      padding-top: 60px;
+    }
+
+    @media (min-width: 768px) {
+      .login-container, .admin-dashboard {
+        max-width: 400px;
+        padding: 3rem;
+      }
+
+      .title {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="ind.html" class="brand-logo">🌌 Event Horizon</a>
+    <span class="back-icon" onclick="goBack()">←</span>
+  </header>
+
+  <!-- Admin Login Form -->
+  <div class="login-container" id="login-container">
+    <h1 class="title">Admin Login to Event Horizon</h1>
+    <p class="subtitle">Admin Access Only</p>
+
+    <div class="error-message" id="error-message">❌ Invalid username or password. Please try again.</div>
+
+    <form onsubmit="validateAdminLogin(event)">
+      <div class="input-group">
+        <input type="text" placeholder="Username" id="username-input" required>
+      </div>
+      <div class="input-group">
+        <input type="password" placeholder="Password" id="password-input" required>
+      </div>
+
+      <button type="submit" class="submit-btn">Login as Admin</button>
+    </form>
+  </div>
+
+  <!-- Admin Dashboard (Shown After Login) -->
+  <div class="admin-dashboard" id="admin-dashboard">
+    <h1 class="title">Admin Dashboard</h1>
+    <p class="subtitle">Manage Events and Users</p>
+    <p>Welcome, Admin! Here you can view/manage all events, users, etc.</p>
+    <!-- Placeholder: Add buttons or sections for admin actions, e.g., view events -->
+    <button onclick="viewEvents()">View All Events</button>
+    <div id="events-list"></div>
+    <button class="logout-btn" onclick="adminLogout()">Logout</button>
+  </div>
+
+  <script>
+    // Function to go back
+    function goBack() {
+      window.history.back();
+    }
+
+    // Function to validate admin login credentials
+    function validateAdminLogin(event) {
+      event.preventDefault();
+      
+      const username = document.getElementById('username-input').value.trim();
+      const password = document.getElementById('password-input').value.trim();
+      const errorMessage = document.getElementById('error-message');
+      
+      // Fixed admin credentials
+      const validUsername = 'admin@';
+      const validPassword = '789456';
+      
+      if (username === validUsername && password === validPassword) {
+        // Valid credentials - set admin session and redirect
+        errorMessage.classList.remove('show');
+        localStorage.setItem('isAdminLoggedIn', 'true');
+        alert('Admin login successful!');
+        window.location.href = 'admpage.html';
+      } else {
+        // Invalid credentials - show error message
+        errorMessage.classList.add('show');
+        document.getElementById('password-input').value = ''; // Clear password field
+      }
+    }
+
+    // Placeholder function for viewing events (integrate with your backend API)
+    function viewEvents() {
+      // Example: Fetch and display events (replace with real API call)
+      const eventsList = document.getElementById('events-list');
+      eventsList.innerHTML = '<p>Loading events...</p>';
+      // Simulate API call
+      setTimeout(() => {
+        eventsList.innerHTML = '<div class="event">Sample Event 1</div><div class="event">Sample Event 2</div>';
+      }, 1000);
+    }
+
+    // Function to logout admin
+    function adminLogout() {
+      document.getElementById('admin-dashboard').style.display = 'none';
+      document.getElementById('login-container').style.display = 'block';
+      document.getElementById('username-input').value = '';
+      document.getElementById('password-input').value = '';
+      alert('Admin logged out!');
+    }
+  </script>
+</body>
+</html>

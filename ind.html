@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Horizon - Discover Amazing Events & Opportunities</title>
+  <style>
+    /* Mobile-first responsive design */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #001122, #000011, #000000); /* Navy blue to black gradient */
+      color: #fff;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: rgba(0, 0, 0, 0.3); /* Semi-transparent overlay */
+      border-radius: 0 0 16px 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .admin-login-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      padding: 0.6rem 1.2rem;
+      background: #ff6b6b;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .admin-login-btn:hover {
+      background: #ee5a52;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+    }
+
+    .profile-icon-btn {
+      position: fixed;
+      top: 1rem;
+      right: 5rem;
+      width: 45px;
+      height: 45px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    }
+
+    .profile-icon-btn:hover {
+      background: #0056b3;
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(0, 123, 255, 0.6);
+    }
+
+    .profile-popup {
+      position: fixed;
+      top: 3.5rem;
+      right: 1.5rem;
+      background: rgba(0, 0, 0, 0.95);
+      border: 2px solid #007bff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 300px;
+      display: none;
+      z-index: 100;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .profile-popup.show {
+      display: block;
+    }
+
+    .profile-popup-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #007bff;
+      border-bottom: 1px solid #007bff;
+      padding-bottom: 0.5rem;
+    }
+
+    .profile-popup-info {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-popup-info strong {
+      color: #fff;
+    }
+
+    .profile-popup-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .profile-popup-btn {
+      padding: 0.6rem;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .profile-popup-btn:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .profile-popup-btn.logout {
+      background: #dc3545;
+    }
+
+    .profile-popup-btn.logout:hover {
+      background: #c82333;
+    }
+
+    .icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .main-heading {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 1rem;
+    }
+
+    .description {
+      font-size: 1rem;
+      color: #aaa;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: #007bff;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #007bff;
+      border: 2px solid #007bff;
+    }
+
+    .btn-outline:hover {
+      background: #007bff;
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    }
+
+    .btn-secondary {
+      background: #28a745;
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background: #218838;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+    }
+
+    .btn:focus {
+      outline: 2px solid #007bff;
+      outline-offset: 2px;
+    }
+
+    section {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+
+    .feature-card {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      flex: 1 1 250px;
+      max-width: 300px;
+    }
+
+    .feature-card:hover {
+      box-shadow: 0 8px 32px rgba(0, 123, 255, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .feature-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-text {
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.8);
+      color: #aaa;
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+      .actions {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .features {
+        flex-direction: row;
+      }
+
+      .main-heading {
+        font-size: 3rem;
+      }
+
+      .subtitle {
+        font-size: 1.4rem;
+      }
+
+      .description {
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      header {
+        padding: 6rem 2rem;
+      }
+
+      section {
+        padding: 6rem 2rem;
+      }
+
+      .feature-card {
+        padding: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="#" class="admin-login-btn" id="admin-login-btn" onclick="goToAdminLogin(event)">🔐 Admin</a>
+    <button class="profile-icon-btn" id="profile-icon-btn" onclick="toggleProfilePopup()">👤</button>
+    <div id="profile-popup" class="profile-popup">
+      <div class="profile-popup-title">My Profile</div>
+      <div id="profile-popup-content">
+        <div class="profile-popup-info"><strong>Name:</strong> <span id="popup-name">Not Logged In</span></div>
+        <div class="profile-popup-info"><strong>Email:</strong> <span id="popup-email">-</span></div>
+        <div class="profile-popup-info"><strong>Role:</strong> <span id="popup-role">-</span></div>
+      </div>
+      <div class="profile-popup-btns">
+        <button class="profile-popup-btn" onclick="navigateToProfile()">Go to Profile</button>
+        <button class="profile-popup-btn logout" onclick="logoutUser()">Logout</button>
+      </div>
+    </div>
+    <span class="icon">🌌</span> <!-- Simple icon using emoji -->
+    <h1 class="main-heading">Event Horizon</h1>
+    <p class="subtitle">Discover Amazing Events & Opportunities</p>
+    <p class="description">
+      Join hackathons, workshops, and competitions tailored to your interests. Connect with innovators and build your future in tech.
+    </p>
+    <div class="actions">
+      <a href="#" class="btn btn-primary" id="explore-btn">Explore Events</a>
+      <a href="#" class="btn btn-outline" id="login-btn">Login / Register</a>
+      <a href="#" class="btn btn-secondary" id="post-btn">Post Event</a>
+    </div>
+  </header>
+
+  <section id="why-section">
+    <h2 class="section-title">Why Event Horizon?</h2>
+    <div class="features">
+      <div class="feature-card">
+        <span class="feature-icon">🔍</span>
+        <h3 class="feature-title">Discover Opportunities</h3>
+        <p class="feature-text">Explore events based on your interests and find the perfect match for your skills.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🤝</span>
+        <h3 class="feature-title">Connect & Network</h3>
+        <p class="feature-text">Meet like-minded students and professionals to build lasting connections.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📁</span>
+        <h3 class="feature-title">Build Your Portfolio</h3>
+        <p class="feature-text">Participate in events and showcase your achievements to stand out.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🏢</span>
+        <h3 class="feature-title">For Organizations</h3>
+        <p class="feature-text">Host and manage events easily with our intuitive platform.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 202 Event Horizon. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Button navigation to HTML files
+    // Admin login navigation
+    function goToAdminLogin(event) {
+      event.preventDefault();
+      window.location.href = 'admin.html';
+    }
+
+    // Profile popup functions
+    function toggleProfilePopup() {
+      const popup = document.getElementById('profile-popup');
+      popup.classList.toggle('show');
+      if (popup.classList.contains('show')) {
+        updateProfilePopup();
+      }
+    }
+
+    function updateProfilePopup() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      const popup = document.getElementById('profile-popup');
+      
+      if (currentUser) {
+        // User is logged in - show profile details and popup
+        document.getElementById('popup-name').textContent = currentUser.fullName || 'User';
+        document.getElementById('popup-email').textContent = currentUser.email || '-';
+        document.getElementById('popup-role').textContent = currentUser.role || '-';
+        document.getElementById('profile-icon-btn').style.display = 'flex';
+      } else {
+        // User is not logged in - hide profile icon
+        document.getElementById('profile-icon-btn').style.display = 'none';
+      }
+    }
+
+    function navigateToProfile() {
+      window.location.href = 'profile.html';
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('isLoggedIn');
+      window.location.href = 'ind.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const exploreBtn = document.getElementById('explore-btn');
+      const loginBtn = document.getElementById('login-btn');
+      const postBtn = document.getElementById('post-btn');
+
+      // Hide profile icon if not logged in
+      updateProfilePopup();
+
+      if (exploreBtn) {
+        exploreBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.location.href = 'explore.html';
+        });
+      }
+
+      if (loginBtn) {
+        loginBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.location.href = 'login.html';
+        });
+      }
+
+      if (postBtn) {
+        postBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.location.href = 'post.html';
+        });
+      }
+
+      // Close popup when clicking outside
+      document.addEventListener('click', (e) => {
+        const popup = document.getElementById('profile-popup');
+        const btn = document.getElementById('profile-icon-btn');
+        if (!popup.contains(e.target) && !btn.contains(e.target)) {
+          popup.classList.remove('show');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post Event - Event Horizon</title>
+  <style>
+    /* Mobile-first responsive design - Same theme */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #001122, #2c2c2c); /* Navy blue to charcoal gradient */
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: rgba(0, 0, 0, 0.8);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .back-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .back-icon:hover {
+      color: #007bff;
+    }
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .form-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-section {
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #007bff;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: background 0.3s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      background: #444;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .tags-input {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .tag-input {
+      background: #555;
+      color: #fff;
+      border: none;
+      padding: 0.5rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .tag-input.selected {
+      background: #007bff;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1rem;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: #0056b3;
+    }
+
+    .submit-btn:focus {
+      outline: 2px solid #007bff;
+      outline-offset: 2px;
+    }
+
+    .password-note {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-top: 0.5rem;
+    }
+
+    .brand-logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #007bff;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      text-decoration: none;
+      margin-right: 1rem;
+    }
+
+    .brand-logo:hover {
+      color: #0056b3;
+    }
+
+    .profile-icon-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1.5rem;
+      width: 45px;
+      height: 45px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    }
+
+    .profile-icon-btn:hover {
+      background: #0056b3;
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(0, 123, 255, 0.6);
+    }
+
+    .profile-popup {
+      position: fixed;
+      top: 3.5rem;
+      right: 1.5rem;
+      background: rgba(0, 0, 0, 0.95);
+      border: 2px solid #007bff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 300px;
+      display: none;
+      z-index: 100;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .profile-popup.show {
+      display: block;
+    }
+
+    .profile-popup-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #007bff;
+      border-bottom: 1px solid #007bff;
+      padding-bottom: 0.5rem;
+    }
+
+    .profile-popup-info {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-popup-info strong {
+      color: #fff;
+    }
+
+    .profile-popup-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .profile-popup-btn {
+      padding: 0.6rem;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .profile-popup-btn:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .profile-popup-btn.logout {
+      background: #dc3545;
+    }
+
+    .profile-popup-btn.logout:hover {
+      background: #c82333;
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+      .form-container {
+        padding: 3rem;
+      }
+
+      .page-title {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="ind.html" class="brand-logo">🌌 Event Horizon</a>
+    <span class="back-icon" onclick="goBack()">←</span>
+    <h1 class="page-title">Post Event</h1>
+  </header>
+
+  <button class="profile-icon-btn" id="profile-icon-btn" onclick="toggleProfilePopup()">👤</button>
+  <div id="profile-popup" class="profile-popup">
+    <div class="profile-popup-title">My Profile</div>
+    <div id="profile-popup-content">
+      <div class="profile-popup-info"><strong>Name:</strong> <span id="popup-name">Not Logged In</span></div>
+      <div class="profile-popup-info"><strong>Email:</strong> <span id="popup-email">-</span></div>
+      <div class="profile-popup-info"><strong>Role:</strong> <span id="popup-role">-</span></div>
+    </div>
+    <div class="profile-popup-btns">
+      <button class="profile-popup-btn" onclick="navigateToProfile()">Go to Profile</button>
+      <button class="profile-popup-btn logout" onclick="logoutUser()">Logout</button>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <form id="post-event-form" onsubmit="submitEvent(event)">
+      <!-- Organizer Credentials Section -->
+      <div class="form-section">
+        <h2 class="section-title">Organizer Credentials</h2>
+        <div class="form-group">
+          <label for="org-name">Full Name</label>
+          <input type="text" id="org-name" placeholder="Enter your full name" required>
+        </div>
+        <div class="form-group">
+          <label for="org-email">Email</label>
+          <input type="email" id="org-email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="org-organization">Organization</label>
+          <input type="text" id="org-organization" placeholder="Enter your organization name" required>
+        </div>
+        <div class="form-group">
+          <label for="country-code">Country Code & Phone Number</label>
+          <div style="display: flex; gap: 0.75rem;">
+            <select id="country-code" style="flex: 0 0 120px;" required>
+              <option value="+1">🇺🇸 +1 (US)</option>
+              <option value="+44">🇬🇧 +44 (UK)</option>
+              <option value="+91">🇮🇳 +91 (India)</option>
+              <option value="+86">🇨🇳 +86 (China)</option>
+              <option value="+81">🇯🇵 +81 (Japan)</option>
+              <option value="+49">🇩🇪 +49 (Germany)</option>
+              <option value="+33">🇫🇷 +33 (France)</option>
+              <option value="+39">🇮🇹 +39 (Italy)</option>
+              <option value="+34">🇪🇸 +34 (Spain)</option>
+              <option value="+61">🇦🇺 +61 (Australia)</option>
+              <option value="+1-CA">🇨🇦 +1 (Canada)</option>
+              <option value="+55">🇧🇷 +55 (Brazil)</option>
+              <option value="+52">🇲🇽 +52 (Mexico)</option>
+              <option value="+65">🇸🇬 +65 (Singapore)</option>
+              <option value="+60">🇲🇾 +60 (Malaysia)</option>
+              <option value="+62">🇮🇩 +62 (Indonesia)</option>
+              <option value="+66">🇹🇭 +66 (Thailand)</option>
+              <option value="+82">🇰🇷 +82 (South Korea)</option>
+              <option value="+92">🇵🇰 +92 (Pakistan)</option>
+              <option value="+20">🇪🇬 +20 (Egypt)</option>
+            </select>
+            <input type="tel" id="org-phone" placeholder="Enter your phone number" style="flex: 1;" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="org-website">Website (Optional)</label>
+          <input type="url" id="org-website" placeholder="https://example.com">
+        </div>
+      </div>
+
+      <!-- Event Details Section -->
+      <div class="form-section">
+        <h2 class="section-title">Event Details</h2>
+        <div class="form-group">
+          <label for="event-title">Event Title</label>
+          <input type="text" id="event-title" placeholder="e.g., AI Hackathon 2024" required>
+        </div>
+        <div class="form-group">
+          <label for="event-type">Event Type</label>
+          <select id="event-type" required>
+            <option value="">Select type</option>
+            <option value="hackathon">Hackathon</option>
+            <option value="internship">Internship</option>
+            <option value="workshop">Workshop</option>
+            <option value="competition">Competition</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="event-description">Description</label>
+          <textarea id="event-description" placeholder="Describe the event in detail" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="event-date">Event Date</label>
+          <input type="date" id="event-date" required>
+        </div>
+        <div class="form-group">
+          <label for="event-location">Location</label>
+          <input type="text" id="event-location" placeholder="e.g., Online or City, Country" required>
+        </div>
+        <div class="form-group">
+          <label for="event-max-attendees">Max Attendees</label>
+          <input type="number" id="event-max-attendees" placeholder="e.g., 500" min="1" required>
+        </div>
+        <div class="form-group">
+          <label>Tags (Select relevant)</label>
+          <div class="tags-input">
+            <button type="button" class="tag-input" data-tag="AI">AI</button>
+            <button type="button" class="tag-input" data-tag="Machine Learning">Machine Learning</button>
+            <button type="button" class="tag-input" data-tag="Web Development">Web Development</button>
+            <button type="button" class="tag-input" data-tag="Mobile Development">Mobile Development</button>
+            <button type="button" class="tag-input" data-tag="Cybersecurity">Cybersecurity</button>
+            <button type="button" class="tag-input" data-tag="Data Science">Data Science</button>
+            <button type="button" class="tag-input" data-tag="Blockchain">Blockchain</button>
+            <button type="button" class="tag-input" data-tag="IoT">IoT</button>
+            <button type="button" class="tag-input" data-tag="UI/UX Design">UI/UX Design</button>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Post Event</button>
+    </form>
+  </div>
+
+  <script>
+    // Function to go back
+    function goBack() {
+      window.history.back(); // Or redirect to a specific page
+    }
+
+    // Tag selection
+    const tagButtons = document.querySelectorAll('.tag-input');
+    tagButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        button.classList.toggle('selected');
+      });
+    });
+
+    // Function to submit the event
+    function submitEvent(event) {
+      event.preventDefault();
+
+      // Collect form data
+      const organizer = {
+        name: document.getElementById('org-name').value,
+        email: document.getElementById('org-email').value,
+        organization: document.getElementById('org-organization').value,
+        phone: document.getElementById('country-code').value + ' ' + document.getElementById('org-phone').value,
+        website: document.getElementById('org-website').value
+      };
+
+      const eventDetails = {
+        id: Date.now(),
+        title: document.getElementById('event-title').value,
+        type: document.getElementById('event-type').value,
+        description: document.getElementById('event-description').value,
+        date: document.getElementById('event-date').value,
+        location: document.getElementById('event-location').value,
+        maxAttendees: parseInt(document.getElementById('event-max-attendees').value),
+        tags: Array.from(document.querySelectorAll('.tag-input.selected')).map(btn => btn.getAttribute('data-tag')),
+        organizer: organizer.organization,
+        status: 'upcoming',
+        currentAttendees: 0,
+        icon: '🎉',
+        createdAt: new Date().toISOString()
+      };
+
+      // Save to postedEvents (for explore.html)
+      let allEvents = JSON.parse(localStorage.getItem('postedEvents')) || [];
+      allEvents.push(eventDetails);
+      localStorage.setItem('postedEvents', JSON.stringify(allEvents));
+
+      // Save to myPostedEvents (for bottom.html)
+      let myEvents = JSON.parse(localStorage.getItem('myPostedEvents')) || [];
+      myEvents.push(eventDetails);
+      localStorage.setItem('myPostedEvents', JSON.stringify(myEvents));
+
+      // Show success message
+      alert('Event posted successfully!');
+
+      // Reset form
+      document.getElementById('post-event-form').reset();
+      tagButtons.forEach(btn => btn.classList.remove('selected'));
+
+      // Redirect to explore page
+      window.location.href = 'explore.html';
+    }
+
+    // Profile popup functions
+    function toggleProfilePopup() {
+      const popup = document.getElementById('profile-popup');
+      popup.classList.toggle('show');
+      if (popup.classList.contains('show')) {
+        updateProfilePopup();
+      }
+    }
+
+    function updateProfilePopup() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      const popup = document.getElementById('profile-popup');
+      
+      if (currentUser) {
+        document.getElementById('popup-name').textContent = currentUser.fullName || 'User';
+        document.getElementById('popup-email').textContent = currentUser.email || '-';
+        document.getElementById('popup-role').textContent = currentUser.role || '-';
+        document.getElementById('profile-icon-btn').style.display = 'flex';
+      } else {
+        popup.classList.remove('show');
+        document.getElementById('profile-icon-btn').style.display = 'none';
+      }
+    }
+
+    function navigateToProfile() {
+      window.location.href = 'bottom.html';
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('isLoggedIn');
+      window.location.href = 'ind.html';
+    }
+
+    // Initialize profile popup on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      updateProfilePopup();
+      
+      // Close popup when clicking outside
+      const popup = document.getElementById('profile-popup');
+      const btn = document.getElementById('profile-icon-btn');
+      if (popup && btn) {
+        document.addEventListener('click', (e) => {
+          if (!popup.contains(e.target) && !btn.contains(e.target)) {
+            popup.classList.remove('show');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

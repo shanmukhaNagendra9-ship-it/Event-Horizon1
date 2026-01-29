@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Details - Web Development Workshop Series</title>
+  <style>
+    /* Mobile-first responsive design */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #000011; /* Navy/black background */
+      color: #fff;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: rgba(0, 0, 0, 0.8);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .back-arrow {
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      margin-right: 1rem;
+    }
+
+    .back-arrow:hover {
+      color: #007bff;
+    }
+
+    /* Hero/Header Section */
+    .hero {
+      background: linear-gradient(135deg, #007bff 0%, #ff69b4 100%); /* Blue to pink gradient */
+      padding: 4rem 2rem;
+      text-align: center;
+      position: relative;
+      border-radius: 0 0 16px 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .event-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .status-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(220, 53, 69, 0.9);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    /* Event Information Section */
+    .event-info {
+      padding: 2rem 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .event-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .details-list {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+
+    .detail-item:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .detail-icon {
+      font-size: 1.5rem;
+      margin-right: 1rem;
+      color: #007bff;
+    }
+
+    .detail-text {
+      font-size: 1rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      background: #333;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      transition: background 0.3s ease;
+    }
+
+    .tag:hover {
+      background: #007bff;
+    }
+
+    /* About Section */
+    .about-section {
+      padding: 2rem 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .about-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .about-text {
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    /* Participants Section */
+    .participants-section {
+      padding: 2rem 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .participants-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #333;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #007bff, #ff69b4);
+      border-radius: 6px;
+      width: 75.6%; /* 756/1000 */
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      font-size: 0.9rem;
+      color: #ccc;
+      text-align: center;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 2rem 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .cta-button {
+      width: 100%;
+      padding: 1rem;
+      background: transparent;
+      color: #007bff;
+      border: 2px solid #007bff;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .cta-button:hover {
+      background: #007bff;
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    }
+
+    .cta-button:focus {
+      outline: 2px solid #007bff;
+      outline-offset: 2px;
+    }
+
+    .brand-logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #007bff;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      text-decoration: none;
+      margin-right: 1rem;
+    }
+
+    .brand-logo:hover {
+      color: #0056b3;
+    }
+
+    .profile-icon-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1.5rem;
+      width: 45px;
+      height: 45px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    }
+
+    .profile-icon-btn:hover {
+      background: #0056b3;
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(0, 123, 255, 0.6);
+    }
+
+    .profile-popup {
+      position: fixed;
+      top: 3.5rem;
+      right: 1.5rem;
+      background: rgba(0, 0, 0, 0.95);
+      border: 2px solid #007bff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 300px;
+      display: none;
+      z-index: 100;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .profile-popup.show {
+      display: block;
+    }
+
+    .profile-popup-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #007bff;
+      border-bottom: 1px solid #007bff;
+      padding-bottom: 0.5rem;
+    }
+
+    .profile-popup-info {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-popup-info strong {
+      color: #fff;
+    }
+
+    .profile-popup-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .profile-popup-btn {
+      padding: 0.6rem;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .profile-popup-btn:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .profile-popup-btn.logout {
+      background: #dc3545;
+    }
+
+    .profile-popup-btn.logout:hover {
+      background: #c82333;
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+      .hero {
+        padding: 6rem 2rem;
+      }
+
+      .event-title {
+        font-size: 2.5rem;
+      }
+
+      .detail-item {
+        padding: 1rem;
+      }
+
+      .about-section, .participants-section, .cta-section {
+        padding: 3rem 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <a href="ind.html" class="brand-logo">🌌 Event Horizon</a>
+    <span class="back-arrow" onclick="goBack()">←</span>
+    <h1>Event Details</h1>
+  </nav>
+
+  <button class="profile-icon-btn" id="profile-icon-btn" onclick="toggleProfilePopup()">👤</button>
+  <div id="profile-popup" class="profile-popup">
+    <div class="profile-popup-title">My Profile</div>
+    <div id="profile-popup-content">
+      <div class="profile-popup-info"><strong>Name:</strong> <span id="popup-name">Not Logged In</span></div>
+      <div class="profile-popup-info"><strong>Email:</strong> <span id="popup-email">-</span></div>
+      <div class="profile-popup-info"><strong>Role:</strong> <span id="popup-role">-</span></div>
+    </div>
+    <div class="profile-popup-btns">
+      <button class="profile-popup-btn" onclick="navigateToProfile()">Go to Profile</button>
+      <button class="profile-popup-btn logout" onclick="logoutUser()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Hero/Header Section -->
+  <header class="hero">
+    <span class="event-icon">💻</span>
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      Ongoing
+    </div>
+  </header>
+
+  <!-- Event Information Section -->
+  <section class="event-info">
+    <h2 class="event-title">Web Development Workshop Series</h2>
+    <ul class="details-list">
+      <li class="detail-item">
+        <span class="detail-icon">📅</span>
+        <div class="detail-text">
+          <strong>Start Date & Time:</strong> October 15, 2023, 10:00 AM
+        </div>
+      </li>
+      <li class="detail-item">
+        <span class="detail-icon">📅</span>
+        <div class="detail-text">
+          <strong>End Date & Time:</strong> October 20, 2023, 5:00 PM
+        </div>
+      </li>
+      <li class="detail-item">
+        <span class="detail-icon">🏢</span>
+        <div class="detail-text">
+          <strong>Organizer:</strong> Code Academy
+        </div>
+      </li>
+      <li class="detail-item">
+        <span class="detail-icon">📍</span>
+        <div class="detail-text">
+          <strong>Location:</strong> Online
+        </div>
+      </li>
+    </ul>
+    <div class="tags">
+      <span class="tag">Web Development</span>
+      <span class="tag">JavaScript</span>
+      <span class="tag">Full Stack</span>
+    </div>
+  </section>
+
+  <!-- About This Event Section -->
+  <section class="about-section">
+    <h3 class="about-title">About This Event</h3>
+    <p class="about-text">
+      Join our comprehensive Web Development Workshop Series designed for beginners and intermediate developers. Learn modern web technologies, build real projects, and gain hands-on experience in full-stack development. This series covers HTML, CSS, JavaScript, React, Node.js, and more.
+    </p>
+  </section>
+
+  <!-- Participants Section -->
+  <section class="participants-section">
+    <h3 class="participants-title">Participants</h3>
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+    <p class="progress-text">756/1000 filled</p>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <button class="cta-button" onclick="registerForEvent()">Login to Register</button>
+  </section>
+
+  <script>
+    // JavaScript for interactivity
+    function goBack() {
+      window.history.back(); // Go to previous page
+    }
+
+    function registerForEvent() {
+      window.location.href = 'login.html';
+    }
+
+    // Profile popup functions
+    function toggleProfilePopup() {
+      const popup = document.getElementById('profile-popup');
+      popup.classList.toggle('show');
+      if (popup.classList.contains('show')) {
+        updateProfilePopup();
+      }
+    }
+
+    function updateProfilePopup() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      const popup = document.getElementById('profile-popup');
+      
+      if (currentUser) {
+        document.getElementById('popup-name').textContent = currentUser.fullName || 'User';
+        document.getElementById('popup-email').textContent = currentUser.email || '-';
+        document.getElementById('popup-role').textContent = currentUser.role || '-';
+        document.getElementById('profile-icon-btn').style.display = 'flex';
+      } else {
+        popup.classList.remove('show');
+        document.getElementById('profile-icon-btn').style.display = 'none';
+      }
+    }
+
+    function navigateToProfile() {
+      window.location.href = 'bottom.html';
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('isLoggedIn');
+      window.location.href = 'ind.html';
+    }
+
+    // Initialize profile popup on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      updateProfilePopup();
+      
+      // Close popup when clicking outside
+      const popup = document.getElementById('profile-popup');
+      const btn = document.getElementById('profile-icon-btn');
+      if (popup && btn) {
+        document.addEventListener('click', (e) => {
+          if (!popup.contains(e.target) && !btn.contains(e.target)) {
+            popup.classList.remove('show');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
